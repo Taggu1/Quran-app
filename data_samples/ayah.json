@@ -1,0 +1,19 @@
+{
+    "number": 1,
+    "text": "﻿بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+    "surah": {
+        "number": 1,
+        "name": "سُورَةُ ٱلْفَاتِحَةِ",
+        "englishName": "Al-Faatiha",
+        "englishNameTranslation": "The Opening",
+        "revelationType": "Meccan",
+        "numberOfAyahs": 7
+    },
+    "numberInSurah": 1,
+    "juz": 1,
+    "manzil": 1,
+    "page": 1,
+    "ruku": 1,
+    "hizbQuarter": 1,
+    "sajda": false
+}
