@@ -14,10 +14,12 @@ class WerdPagePlayButton extends StatefulWidget {
 class _WerdPagePlayButtonState extends State<WerdPagePlayButton> {
   @override
   Widget build(BuildContext context) {
+    print("builded");
     return BlocBuilder<WerdBloc, WerdState>(
       builder: (context, state) {
         if (state is LoadedWerdState) {
           return FloatingActionButton(
+              backgroundColor: Colors.teal.withOpacity(0.8),
               onPressed: () => _onPlayButtonPressed(state.werd),
               child: Icon(
                   state.werd.audio.playing ? Icons.pause : Icons.play_arrow));

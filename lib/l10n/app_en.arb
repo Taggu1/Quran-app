@@ -1,0 +1,30 @@
+{
+    "language": "English",
+    "@language": {
+        "description": "The current language"
+    },
+    "homePage": "Home Page",
+    "@homePage": {
+        "description": "first page name"
+    },
+    "settings": "Settings",
+    "@settings": {
+        "description": "Settings page name"
+    },
+    "darkTheme": "Dark Theme",
+    "@darkTheme": {
+        "description": "Dark Theme name"
+    },
+    "editions": "Editions",
+    "@editions": {
+        "description": "eddtions setting name"
+    },
+    "recutiers": "Recutiers",
+    "@recutiers": {
+        "description": "Recutiers setting name"
+    },
+    "versesCount": "Verses Count",
+    "@versesCount": {
+        "description": "VersesCount setting name"
+    }
+}

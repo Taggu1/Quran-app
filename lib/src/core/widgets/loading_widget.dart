@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class LoadingWidget extends StatelessWidget {
   const LoadingWidget({Key? key}) : super(key: key);
@@ -11,7 +8,9 @@ class LoadingWidget extends StatelessWidget {
     return const Padding(
       padding: EdgeInsets.all(8),
       child: Center(
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(
+          color: Colors.teal,
+        ),
       ),
     );
   }

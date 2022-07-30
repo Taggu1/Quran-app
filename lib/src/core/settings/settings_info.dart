@@ -7,7 +7,7 @@ import '../constants/default_settings.dart';
 import '../constants/keys.dart';
 import '../error/exceptions.dart';
 
-class SettingsInfo {
+class SettingsInfo with ChangeNotifier {
   final SharedPreferences sharedPreferences;
   Settings? settings;
 
@@ -23,14 +23,11 @@ class SettingsInfo {
       }
       settings = defaultSettings;
     } else {
-      print("fromSotrage");
-
       final Settings settingsToReturn = Settings(
         quranEdition: sharedPreferences.getString(quranEditionKey)!,
         quranRecuter: sharedPreferences.getString(quranRecuterKey)!,
-        ayahsCount: sharedPreferences.getInt(ayahsCountKey)!,
+        ayahsCount: int.parse(sharedPreferences.getString(ayahsCountKey)!),
         appLanguage: sharedPreferences.getString(appLanguageKey)!,
-        isDarkMode: sharedPreferences.getBool(isDarkModeKey)!,
       );
       print(settingsToReturn);
       settings = settingsToReturn;
@@ -40,10 +37,10 @@ class SettingsInfo {
   Future<void> updateOneSettingWithKey(String key, value) async {
     sharedPreferences.setString(key, value);
     fetchSettings();
+    notifyListeners();
   }
 
   Future<Unit> updateSettingsFromDefault({required Settings settings}) async {
-    print("UpdateSettings");
     final response = await setSettings(settings);
     if (response != true) {
       throw EmptyCasheException();
@@ -54,11 +51,11 @@ class SettingsInfo {
 
   Future<bool> setSettings(Settings settings) async {
     try {
-      await sharedPreferences.setBool(isDarkModeKey, settings.isDarkMode);
       await sharedPreferences.setString(appLanguageKey, settings.appLanguage);
       await sharedPreferences.setString(quranEditionKey, settings.quranEdition);
       await sharedPreferences.setString(quranRecuterKey, settings.quranRecuter);
-      await sharedPreferences.setInt(ayahsCountKey, settings.ayahsCount);
+      await sharedPreferences.setString(
+          ayahsCountKey, settings.ayahsCount.toString());
       return true;
     } catch (e) {
       return false;

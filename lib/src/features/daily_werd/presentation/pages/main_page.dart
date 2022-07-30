@@ -1,14 +1,10 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quran_app_clean_architecture/src/core/constants/colors.dart';
+import 'package:quran_app_clean_architecture/src/features/daily_werd/presentation/widgets/ruku_data_widget.dart';
 import 'package:quran_app_clean_architecture/src/features/daily_werd/presentation/widgets/werd_page_play_button.dart';
-import 'package:quran_app_clean_architecture/src/features/settings/presentation/bloc/settings_bloc/settings_bloc.dart';
 
 import '../../../../core/widgets/loading_widget.dart';
-import '../../domain/entities/werd.dart';
 import '../bloc/werd/werd_bloc.dart';
 import '../widgets/werd_widget.dart';
 
@@ -17,14 +13,14 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("BUilded");
     return SafeArea(
       child: Scaffold(
-          backgroundColor: kBlackColor,
-          body: _buildBody(),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: const WerdPagePlayButton()),
+        backgroundColor: Theme.of(context).backgroundColor,
+        body: _buildBody(),
+        floatingActionButtonLocation:
+            FloatingActionButtonLocation.miniCenterFloat,
+        floatingActionButton: const WerdPagePlayButton(),
+      ),
     );
   }
 
@@ -34,11 +30,25 @@ class MainPage extends StatelessWidget {
         if (state is LoadingWerdState) {
           return const LoadingWidget();
         } else if (state is LoadedWerdState) {
-          return WerdWidget(
-            werd: state.werd,
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                RukuDataWidget(
+                  surah: state.werd.surah,
+                  page: state.werd.page,
+                  hizab: state.werd.hizab,
+                  juz: state.werd.juz,
+                ),
+                WerdWidget(
+                  werd: state.werd,
+                ),
+              ],
+            ),
           );
+        } else if (state is FailureWerdState) {
+          return Center(child: Text(state.message));
         } else {
-          return const Center(child: Text("Error"));
+          return const LoadingWidget();
         }
       },
     );

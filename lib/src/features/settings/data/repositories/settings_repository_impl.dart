@@ -25,10 +25,12 @@ class SettingsRepositoryImpl extends SettingsRepository {
   }
 
   @override
-  Future<Either<Failure, Unit>> updateSettings(Settings settings) async {
+  Future<Either<Failure, bool>> updateSettingWithKey(
+      {required String key, required setting}) async {
     try {
-      await settingsLocalDataSource.updateSettings(settings: settings);
-      return const Right(unit);
+      final response = await settingsLocalDataSource.updateSettingWithKey(
+          key: key, setting: setting);
+      return Right(response);
     } catch (e) {
       return Left(UnknownFailure());
     }

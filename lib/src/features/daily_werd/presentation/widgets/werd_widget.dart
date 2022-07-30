@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:quran_app_clean_architecture/src/core/constants/colors.dart';
+import 'package:quran_app_clean_architecture/src/core/constants/ints.dart';
 import 'package:quran_app_clean_architecture/src/core/constants/strings.dart';
 
 import '../../domain/entities/werd.dart';
@@ -20,14 +21,16 @@ class WerdWidget extends StatefulWidget {
 }
 
 class _WerdWidgetState extends State<WerdWidget> {
-  var selectedAyah = 0;
+  var selectedAyah = selectedAyahInitialIndex; // 0
   late StreamSubscription streamSubscription;
+
   @override
   void initState() {
-    streamSubscription = widget.werd.audio.currentIndexStream.listen((index) {
-      if (selectedAyah != index) {
+    streamSubscription =
+        widget.werd.audio.currentIndexStream.listen((currentPlayingindex) {
+      if (selectedAyah != currentPlayingindex) {
         setState(() {
-          selectedAyah = index!;
+          selectedAyah = currentPlayingindex!;
         });
       }
     });
@@ -43,24 +46,27 @@ class _WerdWidgetState extends State<WerdWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        color: kBlackColor,
-        padding: const EdgeInsets.all(8),
-        child: RichText(
-          textAlign: widget.werd.ayahs.length <= 20
-              ? TextAlign.center
-              : TextAlign.justify,
-          text: TextSpan(
-            children: [
-              for (var i = 0; i < widget.werd.ayahs.length; i++) ...{
-                _buildAyah(
-                    ayahString: widget.werd.ayahs[i].text,
-                    index: i,
-                    context: context),
-                _buildAyahSymbol(i)
-              }
-            ],
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: SingleChildScrollView(
+        child: Container(
+          color: Theme.of(context).backgroundColor,
+          padding: const EdgeInsets.all(8),
+          child: RichText(
+            textAlign: widget.werd.ayahs.length <= 20
+                ? TextAlign.center
+                : TextAlign.justify,
+            text: TextSpan(
+              children: [
+                for (var i = 0; i < widget.werd.ayahs.length; i++) ...{
+                  _buildAyah(
+                      ayahString: widget.werd.ayahs[i].text,
+                      index: i,
+                      context: context),
+                  _buildAyahSymbol(i)
+                }
+              ],
+            ),
           ),
         ),
       ),
@@ -75,11 +81,13 @@ class _WerdWidgetState extends State<WerdWidget> {
             "assets/images/quran_ayah_sympol.png",
           ),
           backgroundColor: Colors.white,
-          child: Text(
-            '${widget.werd.ayahs[index].numberInSurah}',
-            textAlign: TextAlign.center,
-            textScaleFactor: index.toString().length <= 2 ? 1 : .8,
-            style: const TextStyle(color: Colors.black),
+          child: FittedBox(
+            child: Text(
+              '${widget.werd.ayahs[index].numberInSurah}',
+              textAlign: TextAlign.center,
+              textScaleFactor: index.toString().length <= 2 ? 1 : .8,
+              style: const TextStyle(color: Colors.black),
+            ),
           ),
           radius: 14,
         ));
@@ -89,13 +97,14 @@ class _WerdWidgetState extends State<WerdWidget> {
       {required BuildContext context,
       required String ayahString,
       required int index}) {
-    if (ayahString.startsWith(basmalaPattern))
-      ayahString = ayahString.split(" ").last;
+
     return TextSpan(
         recognizer: _ayahSpanGestureRecognizer(index),
         text: ' ' + ayahString + ' ',
         style: Theme.of(context).textTheme.headline3?.copyWith(
-              color: index == selectedAyah ? kBrightYellow : kPrimaryColor,
+              color: index == selectedAyah
+                  ? kBrightYellow
+                  : Theme.of(context).textTheme.headline3?.color,
             ));
   }
 

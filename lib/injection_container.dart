@@ -10,12 +10,20 @@ import 'package:quran_app_clean_architecture/src/features/daily_werd/data/reposi
 import 'package:quran_app_clean_architecture/src/features/daily_werd/domain/repositories/werd_repository.dart';
 import 'package:quran_app_clean_architecture/src/features/daily_werd/domain/use_cases/fetch_werd_use_case.dart';
 import 'package:quran_app_clean_architecture/src/features/daily_werd/presentation/bloc/werd/werd_bloc.dart';
+import 'package:quran_app_clean_architecture/src/features/locale/presentation/cubit/locale_cubit.dart';
 import 'package:quran_app_clean_architecture/src/features/settings/data/data_sources/settings_local_data_source.dart';
 import 'package:quran_app_clean_architecture/src/features/settings/data/repositories/settings_repository_impl.dart';
 import 'package:quran_app_clean_architecture/src/features/settings/domain/repositories/settings_repository.dart';
 import 'package:quran_app_clean_architecture/src/features/settings/domain/use_cases/fetch_settings_use_case.dart';
 import 'package:quran_app_clean_architecture/src/features/settings/domain/use_cases/update_settings_use_case.dart';
+import 'package:quran_app_clean_architecture/src/features/settings/presentation/bloc/cubit/settings_cubit.dart';
 import 'package:quran_app_clean_architecture/src/features/settings/presentation/bloc/settings_bloc/settings_bloc.dart';
+import 'package:quran_app_clean_architecture/src/features/theme/data/data_sources/theme_local_data_source.dart';
+import 'package:quran_app_clean_architecture/src/features/theme/data/repositories/theme_repository_impl.dart';
+import 'package:quran_app_clean_architecture/src/features/theme/domain/repositories/themeRepository.dart';
+import 'package:quran_app_clean_architecture/src/features/theme/domain/use_cases/fetch_theme_mode_use_case.dart';
+import 'package:quran_app_clean_architecture/src/features/theme/domain/use_cases/toggle_theme_use_case.dart';
+import 'package:quran_app_clean_architecture/src/features/theme/presentation/cubit/theme_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
@@ -31,7 +39,30 @@ Future<void> init() async {
     ),
   );
 
+  sl.registerFactory(
+    () => LocaleCubit(settingsInfo: sl())..fetchLocal(),
+  );
+
+  sl.registerFactory(
+      () => ThemeCubit(fetchThemeModeUseCase: sl(), toggleThemeUseCase: sl()));
+
   // UseCases
+
+  sl.registerLazySingleton(
+    () => FetchThemeModeUseCase(repository: sl()),
+  );
+
+  sl.registerLazySingleton(
+    () => ToggleThemeUseCase(themeRepository: sl()),
+  );
+
+  sl.registerLazySingleton<FetchSettingsUseCase>(
+    () => FetchSettingsUseCase(repository: sl()),
+  );
+
+  sl.registerLazySingleton<UpdateSettingWithKeyUseCase>(
+    () => UpdateSettingWithKeyUseCase(repository: sl()),
+  );
 
   sl.registerLazySingleton<FetchWerdUseCase>(
     () => FetchWerdUseCase(repository: sl()),
@@ -39,16 +70,32 @@ Future<void> init() async {
 
   // Repositories
 
+  sl.registerLazySingleton<ThemeRepository>(
+    () => ThemeRepositoryImpl(themeLocalDataSource: sl()),
+  );
+
+  sl.registerLazySingleton<SettingsRepository>(
+    () => SettingsRepositoryImpl(settingsLocalDataSource: sl()),
+  );
+
   sl.registerLazySingleton<WerdRepository>(
     () => WerdRepositoryImpl(
+      settingsInfo: sl(),
       werdLocalDataSource: sl(),
       werdRemoteDataSource: sl(),
       netWorkInfo: sl(),
-      settingsInfo: sl(),
     ),
   );
 
   // Data Sources
+
+  sl.registerLazySingleton<ThemeLocalDataSource>(
+    () => ThemeLocalDataSourceImpl(sharedPreferences: sl()),
+  );
+
+  sl.registerLazySingleton<SettingsLocalDataSource>(
+    () => SettingsLocalDataSourceImpl(sharedPreferences: sl()),
+  );
 
   sl.registerLazySingleton<WerdLocalDataSource>(
     () => WerdLocalDataSourceImpl(
@@ -63,8 +110,8 @@ Future<void> init() async {
 
   /// Core
 
-  sl.registerLazySingleton(
-    () => NetWorkInfo(
+  sl.registerLazySingleton<NetWorkInfo>(
+    () => NetWorkInfoInternetConnectionCheckerImpl(
       internetConnectionChecker: sl(),
     ),
   );

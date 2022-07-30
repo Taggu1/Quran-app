@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/animation.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:quran_app_clean_architecture/src/core/constants/default_settings.dart';
 import 'package:quran_app_clean_architecture/src/core/constants/keys.dart';
 import 'package:quran_app_clean_architecture/src/core/constants/urls.dart';
 import 'package:quran_app_clean_architecture/src/core/date/date_info.dart';
@@ -12,6 +14,8 @@ import 'package:quran_app_clean_architecture/src/core/utils/random_int.dart';
 import 'package:quran_app_clean_architecture/src/features/settings/domain/entities/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../core/constants/ints.dart';
+import '../../../../core/utils/audio_url_helper_functions.dart';
 import '../models/werd_model.dart';
 
 abstract class WerdRemoteDataSource {
@@ -29,25 +33,25 @@ class WerdRemoteDataSourceImpl extends WerdRemoteDataSource {
       required this.sharedPreferences});
   @override
   Future<WerdModel> getWerd({required Settings settings}) async {
-    int randomRukuNum;
-    final cashedRandomRukuNum = sharedPreferences.getInt(randomRukuNumKey);
-    print(cashedRandomRukuNum);
-    if (dateInfo.isNewADay() || cashedRandomRukuNum == null) {
-      randomRukuNum = getRandomInt(558);
-      sharedPreferences.setInt(randomRukuNumKey, randomRukuNum);
-    } else {
-      print("f");
-      randomRukuNum = cashedRandomRukuNum;
-    }
-
     try {
+      final randomRukuNum = _getRandomRukuNum();
       final ayahs = await _getAyahs(settings: settings, rukuNum: randomRukuNum);
-      print(ayahs);
 
-      final audioPlayer = await _getPlayer(settings: settings, ayahs: ayahs);
-      return WerdModel(audio: audioPlayer, ayahs: ayahs);
+      final audioPlayer =
+          await getPlayer(settings: settings, ayahs: ayahs, fromInternet: true);
+      final firstAyah = ayahs.first;
+
+      return WerdModel(
+          audio: audioPlayer,
+          ayahs: ayahs,
+          hizab: firstAyah.hizbQuarter,
+          page: firstAyah.page,
+          surah: firstAyah.surah.name,
+          juz: firstAyah.juz);
     } on ServerExciption {
       rethrow;
+    } catch (e) {
+      throw ServerExciption();
     }
   }
 
@@ -68,52 +72,16 @@ class WerdRemoteDataSourceImpl extends WerdRemoteDataSource {
     }
   }
 
-  Future<AudioPlayer> _getPlayer(
-      {required Settings settings, required List<AyahModel> ayahs}) async {
-    final appStorage = await getApplicationDocumentsDirectory();
-    final firstAyah = ayahs.first;
-    final ayahsCount = ayahs.length;
-    final surahNum = firstAyah.surah.number;
-    final playlist = ConcatenatingAudioSource(
-      useLazyPreparation: true,
-      shuffleOrder: DefaultShuffleOrder(),
-      children: [
-        for (int i = firstAyah.numberInSurah;
-            i < firstAyah.numberInSurah + ayahsCount;
-            i++)
-          AudioSource.uri(
-            Uri.parse(
-              _formatToAVaildUrl(
-                ayahNum: i,
-                pageNum: surahNum,
-                quranRecuter: settings.quranRecuter,
-              ),
-            ),
-          ),
-      ],
-    );
-    final player = AudioPlayer();
-    await player.setAudioSource(playlist);
-    return player;
-  }
+  int _getRandomRukuNum() {
+    int randomRukuNum;
+    final cashedRandomRukuNum = sharedPreferences.getInt(randomRukuNumKey);
 
-  String _mapIntToStringForEveryAyahApi(int number) {
-    switch (number.toString().length) {
-      case 1:
-        return "00$number";
-      case 2:
-        return "0$number";
-      case 3:
-        return "$number";
-      default:
-        return "$number";
+    if (dateInfo.isNewADay() || cashedRandomRukuNum == null) {
+      randomRukuNum = getRandomInt(quranRukusNum);
+      sharedPreferences.setInt(randomRukuNumKey, randomRukuNum);
+    } else {
+      randomRukuNum = cashedRandomRukuNum;
     }
-  }
-
-  String _formatToAVaildUrl(
-      {required String quranRecuter,
-      required int pageNum,
-      required int ayahNum}) {
-    return 'https://www.everyayah.com/data/$quranRecuter/${_mapIntToStringForEveryAyahApi(pageNum)}${_mapIntToStringForEveryAyahApi(ayahNum)}.mp3';
+    return randomRukuNum;
   }
 }

@@ -1,21 +1,23 @@
-part of 'settings_bloc.dart';
+// part of 'settings_bloc.dart';
 
-abstract class SettingsEvent extends Equatable {
-  const SettingsEvent();
+// abstract class SettingsEvent extends Equatable {
+//   const SettingsEvent();
 
-  @override
-  List<Object> get props => [];
-}
+//   @override
+//   List<Object> get props => [];
+// }
 
-class LoadSettingsEvent extends SettingsEvent {}
+// class LoadSettingsEvent extends SettingsEvent {}
 
-class UpdateSettingsEvent extends SettingsEvent {
-  final Settings settings;
+// class UpdateSettingsEvent extends SettingsEvent {
+//   final String key;
+//   final dynamic value;
 
-  const UpdateSettingsEvent({
-    required this.settings,
-  });
+//   const UpdateSettingsEvent({
+//     required this.key,
+//     required this.value,
+//   });
 
-  @override
-  List<Object> get props => [settings];
-}
+//   @override
+//   List<Object> get props => [value, key];
+// }

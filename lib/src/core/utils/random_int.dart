@@ -1,7 +1,7 @@
 import 'dart:math';
 
 int getRandomInt(int length) {
-  Random random = new Random();
+  Random random = Random();
   int randomNumber = random.nextInt(length);
   return randomNumber;
 }

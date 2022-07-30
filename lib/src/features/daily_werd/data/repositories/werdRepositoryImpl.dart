@@ -26,7 +26,9 @@ class WerdRepositoryImpl implements WerdRepository {
   });
   @override
   Future<Either<Failure, Werd>> fetchWerd() async {
-    if (await netWorkInfo.isConnected()) {
+    bool isConnected = await netWorkInfo.isConnected();
+    print(settingsInfo.settings);
+    if (isConnected) {
       try {
         print("connected");
         final WerdModel werd = await werdRemoteDataSource.getWerd(
@@ -38,7 +40,8 @@ class WerdRepositoryImpl implements WerdRepository {
       }
     } else {
       try {
-        final WerdModel werd = await werdLocalDataSource.getCashedWerd();
+        final WerdModel werd = await werdLocalDataSource.getCashedWerd(
+            settings: settingsInfo.settings!);
         return Right(werd);
       } on EmptyCasheException {
         return Left(EmptyCasheFailure());

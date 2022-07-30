@@ -1,30 +1,36 @@
-part of 'settings_bloc.dart';
+// part of 'settings_bloc.dart';
 
-abstract class SettingsState extends Equatable {
-  final Settings settings;
-  const SettingsState({required this.settings});
+// abstract class SettingsState extends Equatable {
 
-  @override
-  List<Object> get props => [settings];
-}
+//   const SettingsState();
 
-class SettingsInitial extends SettingsState {
-  SettingsInitial({required super.settings});
-}
+//   @override
+//   List<Object> get props => [];
+// }
 
-class LoadedSettingsState extends SettingsState {
-  LoadedSettingsState({required super.settings});
-}
+// class SettingsInitial extends SettingsState {
+//   final Settings settings;
+//   const SettingsInitial({required this.settings});
 
-class FailureSettingsState extends SettingsState {
-  final String message;
+//  @override
+//   List<Object> get props => [settings];
 
-  const FailureSettingsState({required this.message, required super.settings});
+// }
 
-  @override
-  List<Object> get props => [message, settings];
-}
+// class LoadedSettingsState extends SettingsState {
+//   final Settings settings;
+//   const LoadedSettingsState({required this.settings});
+// }
 
-class LoadingSettingsEvent extends SettingsState {
-  LoadingSettingsEvent({required super.settings});
-}
+// class FailureSettingsState extends SettingsState {
+//   final String message;
+
+//   const FailureSettingsState({required this.message});
+
+//   @override
+//   List<Object> get props => [message];
+// }
+
+// class LoadingSettingsState extends SettingsState {
+//   const LoadingSettingsState();
+// }
