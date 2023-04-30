@@ -21,7 +21,7 @@
 
 |                                           |                                           |                                           |
 | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- |
-| <img src="screenShots/screenshot2.jpg" width="400"> | <img src="screenShots/screenshot1.jpg" width="400"> | <img src="screenShots/screenshot3.jpg" width="400"> |
+| <img src="screenshots/screenshot2.jpg" width="400"> | <img src="screenshots/screenshot1.jpg" width="400"> | <img src="screenshots/screenshot3.jpg" width="400"> |
 
 
 ## Contact me 📧
