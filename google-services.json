@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "657885635020",
+    "project_id": "quran-app-f455e",
+    "storage_bucket": "quran-app-f455e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657885635020:android:bc2163e4f8e0884b10fd69",
+        "android_client_info": {
+          "package_name": "com.example.quran_app_clean_architecture"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "657885635020-p3p2nr1l6bj92p02nuroj1cqj6jb9gg8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.quran_app_clean_architecture",
+            "certificate_hash": "28b8eca43e63106ec32c285ac1357c21f7069d7d"
+          }
+        },
+        {
+          "client_id": "657885635020-5bao52o1kbjcorte18tbgru30enld1g7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxz7K0Dp0vLRwV9-ccxAGtqpQ-VwEBIU4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "657885635020-5bao52o1kbjcorte18tbgru30enld1g7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "657885635020-p2fl9fpvt4sin5ipfjji06c0tp1dtggv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.quranAppCleanArchitecture"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

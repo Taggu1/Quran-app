@@ -1,29 +1,27 @@
-import 'dart:math';
-
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:quran_app_clean_architecture/src/core/constants/colors.dart';
-import 'package:quran_app_clean_architecture/src/core/settings/settings_info.dart';
-import 'package:quran_app_clean_architecture/src/core/constants/theme_constants.dart';
-import 'package:quran_app_clean_architecture/src/features/daily_werd/presentation/bloc/werd/werd_bloc.dart';
-import 'package:quran_app_clean_architecture/src/features/daily_werd/presentation/pages/bottom_navbar.dart';
-import 'package:quran_app_clean_architecture/src/features/daily_werd/presentation/pages/main_page.dart';
 import 'package:quran_app_clean_architecture/src/features/settings/presentation/bloc/cubit/settings_cubit.dart';
-import 'package:quran_app_clean_architecture/src/features/settings/presentation/bloc/settings_bloc/settings_bloc.dart';
-import 'package:quran_app_clean_architecture/src/features/theme/presentation/cubit/theme_cubit.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'firebase_options.dart';
 import 'injection_container.dart' as di;
 import 'l10n/l10n.dart';
+import 'src/core/constants/theme_constants.dart';
+import 'src/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'src/features/daily_werd/presentation/bloc/werd/werd_bloc.dart';
+import 'src/features/daily_werd/presentation/pages/bottom_navbar.dart';
 import 'src/features/locale/presentation/cubit/locale_cubit.dart';
+import 'src/features/progress/presentation/bloc/bloc/user_progress_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   await di.init();
-  debugRepaintRainbowEnabled = true;
   runApp(const MyApp());
 }
 
@@ -36,12 +34,23 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (ctx) {
+            return di.sl<UserProgressBloc>();
+          },
+        ),
+        BlocProvider(
+          create: (ctx) {
+            return di.sl<AuthBloc>()..add(FetchUserFromStorageEvent());
+          },
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (ctx) {
             return di.sl<LocaleCubit>();
           },
         ),
         BlocProvider(
           create: (ctx) {
-            return di.sl<ThemeCubit>()..fetchThemeMode();
+            return di.sl<SettingsCubit>()..fetchSettings();
           },
         ),
         BlocProvider(
@@ -52,7 +61,7 @@ class MyApp extends StatelessWidget {
       ],
       child: BlocBuilder<LocaleCubit, LocaleState>(
         builder: (context, localeState) {
-          return BlocBuilder<ThemeCubit, ThemeState>(
+          return BlocBuilder<SettingsCubit, SettingsState>(
             builder: (context, state) {
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
@@ -77,11 +86,7 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  ThemeMode _themModeHandler(BuildContext context, state) {
-    if (state is LoadedThemeState) {
-      return state.themeMode;
-    } else {
-      return ThemeMode.dark;
-    }
+  ThemeMode _themModeHandler(BuildContext context, SettingsState state) {
+    return state.settings.isDarkTheme ? ThemeMode.dark : ThemeMode.light;
   }
 }

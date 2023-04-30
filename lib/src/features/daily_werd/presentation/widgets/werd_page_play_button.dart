@@ -22,7 +22,7 @@ class _WerdPagePlayButtonState extends State<WerdPagePlayButton> {
               backgroundColor: Colors.teal.withOpacity(0.8),
               onPressed: () => _onPlayButtonPressed(state.werd),
               child: Icon(
-                  state.werd.audio.playing ? Icons.pause : Icons.play_arrow));
+                  state.werd.audio!.playing ? Icons.pause : Icons.play_arrow));
         } else {
           return Container();
         }
@@ -32,7 +32,7 @@ class _WerdPagePlayButtonState extends State<WerdPagePlayButton> {
 
   void _onPlayButtonPressed(Werd werd) {
     setState(() {
-      werd.audio.playing ? werd.audio.pause() : werd.audio.play();
+      werd.audio!.playing ? werd.audio!.pause() : werd.audio?.play();
     });
   }
 }

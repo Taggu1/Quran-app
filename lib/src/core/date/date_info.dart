@@ -1,4 +1,3 @@
-import 'package:quran_app_clean_architecture/src/core/entities/ayah.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/keys.dart';

@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class LoadingWidget extends StatelessWidget {
   const LoadingWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
+    return Padding(
       padding: EdgeInsets.all(8),
       child: Center(
-        child: CircularProgressIndicator(
-          color: Colors.teal,
-        ),
+        child: Lottie.asset("assets/images/loading.json"),
       ),
     );
   }

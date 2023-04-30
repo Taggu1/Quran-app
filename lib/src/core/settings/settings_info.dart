@@ -9,7 +9,7 @@ import '../error/exceptions.dart';
 
 class SettingsInfo with ChangeNotifier {
   final SharedPreferences sharedPreferences;
-  Settings? settings;
+  UserSettings? settings;
 
   SettingsInfo({required this.sharedPreferences});
 
@@ -23,11 +23,12 @@ class SettingsInfo with ChangeNotifier {
       }
       settings = defaultSettings;
     } else {
-      final Settings settingsToReturn = Settings(
+      final UserSettings settingsToReturn = UserSettings(
         quranEdition: sharedPreferences.getString(quranEditionKey)!,
         quranRecuter: sharedPreferences.getString(quranRecuterKey)!,
         ayahsCount: int.parse(sharedPreferences.getString(ayahsCountKey)!),
         appLanguage: sharedPreferences.getString(appLanguageKey)!,
+        isDarkTheme: true,
       );
       print(settingsToReturn);
       settings = settingsToReturn;
@@ -40,7 +41,8 @@ class SettingsInfo with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Unit> updateSettingsFromDefault({required Settings settings}) async {
+  Future<Unit> updateSettingsFromDefault(
+      {required UserSettings settings}) async {
     final response = await setSettings(settings);
     if (response != true) {
       throw EmptyCasheException();
@@ -49,7 +51,7 @@ class SettingsInfo with ChangeNotifier {
     return unit;
   }
 
-  Future<bool> setSettings(Settings settings) async {
+  Future<bool> setSettings(UserSettings settings) async {
     try {
       await sharedPreferences.setString(appLanguageKey, settings.appLanguage);
       await sharedPreferences.setString(quranEditionKey, settings.quranEdition);

@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -27,32 +27,44 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  animated_notch_bottom_bar: ^0.0.6
   bottom_navy_bar: ^6.0.0
+  cloud_firestore: ^4.3.1
   convex_bottom_bar: any
   cupertino_icons: ^1.0.2
   dartz: ^0.10.1
   dio: ^4.0.6
   equatable: ^2.0.3
+  firebase_auth: ^4.2.5
+  firebase_core: ^2.4.1
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
+  flutter_floating_bottom_bar: ^1.1.0
+  flutter_localizations:
+    sdk: flutter
+  fluttericon: ^2.0.0
   get_it: ^7.2.0
   google_nav_bar: ^5.0.6
-  internet_connection_checker: ^0.0.1+4
+  google_sign_in: ^5.4.0
+  internet_connection_checker: ^1.0.0+1
+  intl: any
   just_audio: ^0.9.28
+  just_audio_mpv: ^0.1.4
+  lottie: ^2.2.0
   path_provider: ^2.0.11
   quran: ^1.1.2
   shared_preferences: ^2.0.15
-  intl: any
-
-  flutter_localizations: # Add this line
-    sdk: flutter    
+  translucent_navigation_bar: ^1.0.0
+  firebase_core_platform_interface: ^4.5.2
 dev_dependencies:
+  flutter_launcher_icons: ^0.11.0
   flutter_lints: null
-  flutter_launcher_icons: ^0.9.3
   flutter_native_splash: ^2.2.6
   flutter_test:
     sdk: flutter
+
+
 
 flutter_icons:
   android: true
@@ -78,6 +90,8 @@ flutter:
   assets:
     - assets/images/
     - assets/images/quran_ayah_sympol.png
+    - assets/images/google_signin_button.png
+    - assets/images/google_icon.svg
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

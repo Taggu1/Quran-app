@@ -1,12 +1,14 @@
 import 'package:equatable/equatable.dart';
 
-class Settings extends Equatable {
+class UserSettings extends Equatable {
   final String appLanguage;
   final String quranEdition;
   final String quranRecuter;
+  final bool isDarkTheme;
   final int ayahsCount;
 
-  const Settings({
+  const UserSettings({
+    required this.isDarkTheme,
     required this.appLanguage,
     required this.ayahsCount,
     required this.quranEdition,

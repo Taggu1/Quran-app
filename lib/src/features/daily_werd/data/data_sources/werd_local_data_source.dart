@@ -3,21 +3,21 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:quran_app_clean_architecture/src/core/entities/ayah.dart';
-import 'package:quran_app_clean_architecture/src/core/error/exceptions.dart';
-import 'package:quran_app_clean_architecture/src/core/error/failures.dart';
-import 'package:quran_app_clean_architecture/src/core/models/ayah_model.dart';
-import 'package:quran_app_clean_architecture/src/features/settings/domain/entities/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/constants/keys.dart';
+import '../../../../core/entities/ayah.dart';
+import '../../../../core/error/exceptions.dart';
+import '../../../../core/error/failures.dart';
+import '../../../../core/models/ayah_model.dart';
 import '../../../../core/utils/audio_url_helper_functions.dart';
+import '../../../settings/domain/entities/settings.dart';
 import '../models/werd_model.dart';
 import '../../../../core/utils/ayah_to_json.dart';
 
 abstract class WerdLocalDataSource {
   Future<Unit> casheWerd({required List<Ayah> ayahs});
-  Future<WerdModel> getCashedWerd({required Settings settings});
+  Future<WerdModel> getCashedWerd({required UserSettings settings});
 }
 
 class WerdLocalDataSourceImpl extends WerdLocalDataSource {
@@ -37,7 +37,7 @@ class WerdLocalDataSourceImpl extends WerdLocalDataSource {
   }
 
   @override
-  Future<WerdModel> getCashedWerd({required Settings settings}) async {
+  Future<WerdModel> getCashedWerd({required UserSettings settings}) async {
     try {
       final ayahs = _getAyahsFromLocal();
 

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quran_app_clean_architecture/src/features/daily_werd/presentation/widgets/ruku_data_widget.dart';
-import 'package:quran_app_clean_architecture/src/features/daily_werd/presentation/widgets/werd_page_play_button.dart';
 
 import '../../../../core/widgets/loading_widget.dart';
 import '../bloc/werd/werd_bloc.dart';
+import '../widgets/ruku_data_widget.dart';
+import '../widgets/werd_page_play_button.dart';
 import '../widgets/werd_widget.dart';
 
 class MainPage extends StatelessWidget {
@@ -17,9 +17,6 @@ class MainPage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         body: _buildBody(),
-        floatingActionButtonLocation:
-            FloatingActionButtonLocation.miniCenterFloat,
-        floatingActionButton: const WerdPagePlayButton(),
       ),
     );
   }
@@ -30,6 +27,7 @@ class MainPage extends StatelessWidget {
         if (state is LoadingWerdState) {
           return const LoadingWidget();
         } else if (state is LoadedWerdState) {
+          print(state.werd.audio?.duration);
           return SingleChildScrollView(
             child: Column(
               children: [

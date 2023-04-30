@@ -1,4 +1,4 @@
-import 'package:quran_app_clean_architecture/src/core/entities/surah.dart';
+import '../entities/surah.dart';
 
 class SurahModel extends Surah {
   const SurahModel(

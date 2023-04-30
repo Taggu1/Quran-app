@@ -4,22 +4,22 @@ import 'package:dio/dio.dart';
 import 'package:flutter/animation.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:quran_app_clean_architecture/src/core/constants/default_settings.dart';
-import 'package:quran_app_clean_architecture/src/core/constants/keys.dart';
-import 'package:quran_app_clean_architecture/src/core/constants/urls.dart';
-import 'package:quran_app_clean_architecture/src/core/date/date_info.dart';
-import 'package:quran_app_clean_architecture/src/core/error/exceptions.dart';
-import 'package:quran_app_clean_architecture/src/core/models/ayah_model.dart';
-import 'package:quran_app_clean_architecture/src/core/utils/random_int.dart';
-import 'package:quran_app_clean_architecture/src/features/settings/domain/entities/settings.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/constants/ints.dart';
+import '../../../../core/constants/keys.dart';
+import '../../../../core/constants/urls.dart';
+import '../../../../core/date/date_info.dart';
+import '../../../../core/error/exceptions.dart';
+import '../../../../core/models/ayah_model.dart';
 import '../../../../core/utils/audio_url_helper_functions.dart';
+import '../../../../core/utils/random_int.dart';
+import '../../../settings/domain/entities/settings.dart';
 import '../models/werd_model.dart';
 
 abstract class WerdRemoteDataSource {
-  Future<WerdModel> getWerd({required Settings settings});
+  Future<WerdModel> getWerd({required UserSettings settings});
 }
 
 class WerdRemoteDataSourceImpl extends WerdRemoteDataSource {
@@ -32,7 +32,7 @@ class WerdRemoteDataSourceImpl extends WerdRemoteDataSource {
       required this.dateInfo,
       required this.sharedPreferences});
   @override
-  Future<WerdModel> getWerd({required Settings settings}) async {
+  Future<WerdModel> getWerd({required UserSettings settings}) async {
     try {
       final randomRukuNum = _getRandomRukuNum();
       final ayahs = await _getAyahs(settings: settings, rukuNum: randomRukuNum);
@@ -56,7 +56,7 @@ class WerdRemoteDataSourceImpl extends WerdRemoteDataSource {
   }
 
   Future<List<AyahModel>> _getAyahs({
-    required Settings settings,
+    required UserSettings settings,
     required int rukuNum,
   }) async {
     final response = await dio.get(

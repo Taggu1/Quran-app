@@ -22,7 +22,11 @@ class RukuDataWidget extends StatelessWidget {
       textDirection: TextDirection.ltr,
       child: Container(
         padding: const EdgeInsets.all(8),
-        color: Colors.teal,
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 18),
+        decoration: BoxDecoration(
+          color: Colors.teal,
+          borderRadius: BorderRadius.circular(12),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: Row(

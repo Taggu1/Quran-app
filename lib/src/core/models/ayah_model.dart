@@ -1,5 +1,5 @@
-import 'package:quran_app_clean_architecture/src/core/entities/ayah.dart';
-import 'package:quran_app_clean_architecture/src/core/models/surah_model.dart';
+import '../entities/ayah.dart';
+import 'surah_model.dart';
 
 class AyahModel extends Ayah {
   const AyahModel({

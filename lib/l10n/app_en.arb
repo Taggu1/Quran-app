@@ -26,5 +26,29 @@
     "versesCount": "Verses Count",
     "@versesCount": {
         "description": "VersesCount setting name"
+    },
+    "progress": "Your Progress",
+    "@progress": {
+        "description": "progress page name"
+    },
+    "progressPageWarning": "You have to have an account to view this page",
+    "@progressPageWarning": {
+        "description": "progress Page Warning"
+    },
+    "signInWithGoogleLabel": "Sign in With Google",
+    "@signInWithGoogleLabel": {
+        "description": "Sign in with google button label"
+    },
+    "daysCount": "Days Count",
+    "@daysCount": {
+        "description": "progress page days count tile title"
+    },
+    "daysStreak": "Days Streak",
+    "@daysStreak": {
+        "description": "progress page days streak tile title"
+    },
+    "werdProgress": "Your werd reading progress",
+    "@werdProgress": {
+        "description": "progress page title tile text"
     }
 }

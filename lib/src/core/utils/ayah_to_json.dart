@@ -1,4 +1,4 @@
-import 'package:quran_app_clean_architecture/src/core/entities/ayah.dart';
+import '../entities/ayah.dart';
 
 extension AyahExtintion on Ayah {
   Map<String, dynamic> toJson() {

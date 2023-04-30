@@ -2,7 +2,8 @@
 library popup_card;
 
 import 'package:flutter/material.dart';
-import 'package:quran_app_clean_architecture/src/core/widgets/popup_card/src/hero_route.dart';
+
+import 'src/hero_route.dart';
 
 // [PopupItemLauncher], when wrapped around a widget like an [Icon], launches the [PopUpItem] widget.
 class PopupItemLauncher extends StatelessWidget {

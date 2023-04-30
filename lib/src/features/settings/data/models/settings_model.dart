@@ -1,12 +1,12 @@
-import 'package:quran_app_clean_architecture/src/features/settings/domain/entities/settings.dart';
+import '../../domain/entities/settings.dart';
 
-class SettingsModel extends Settings {
-  const SettingsModel({
-    required super.quranEdition,
-    required super.quranRecuter,
-    required super.ayahsCount,
-    required super.appLanguage,
-  });
+class SettingsModel extends UserSettings {
+  const SettingsModel(
+      {required super.quranEdition,
+      required super.quranRecuter,
+      required super.ayahsCount,
+      required super.appLanguage,
+      required super.isDarkTheme});
 
   factory SettingsModel.fromJson(Map<String, dynamic> json) {
     return SettingsModel(
@@ -14,6 +14,7 @@ class SettingsModel extends Settings {
       quranRecuter: json["quranRecuter"],
       ayahsCount: json["ayahsCount"],
       appLanguage: json["appLanguage"],
+      isDarkTheme: json['darkTheme'],
     );
   }
 

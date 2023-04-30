@@ -1,4 +1,4 @@
-import 'package:quran_app_clean_architecture/src/core/error/failures.dart';
+import '../error/failures.dart';
 
 String mapFailureToMessage(Failure failure) {
   switch (failure.runtimeType) {

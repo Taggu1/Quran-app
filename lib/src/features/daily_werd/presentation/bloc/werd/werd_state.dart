@@ -1,20 +1,19 @@
 part of 'werd_bloc.dart';
 
-abstract class WerdState extends Equatable {
-  const WerdState();
+class WerdState extends Equatable {
+  final Werd werd;
+  const WerdState(this.werd);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [werd];
 }
 
-class WerdInitial extends WerdState {}
-
-class LoadingWerdState extends WerdState {}
+class LoadingWerdState extends WerdState {
+  const LoadingWerdState(super.werd);
+}
 
 class LoadedWerdState extends WerdState {
-  final Werd werd;
-
-  const LoadedWerdState({required this.werd});
+  const LoadedWerdState(super.werd);
 
   @override
   List<Object> get props => [werd];
@@ -23,8 +22,7 @@ class LoadedWerdState extends WerdState {
 class FailureWerdState extends WerdState {
   final String message;
 
-  const FailureWerdState({required this.message});
-
+  const FailureWerdState(super.werd, {required this.message});
   @override
   List<Object> get props => [message];
 }

@@ -1,14 +1,13 @@
 import 'package:dartz/dartz.dart';
-import 'package:quran_app_clean_architecture/src/core/constants/default_settings.dart';
-import 'package:quran_app_clean_architecture/src/core/error/exceptions.dart';
-import 'package:quran_app_clean_architecture/src/features/settings/domain/entities/settings.dart';
-import 'package:quran_app_clean_architecture/src/features/settings/domain/use_cases/update_settings_use_case.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../core/constants/default_settings.dart';
 import '../../../../core/constants/keys.dart';
+import '../../../../core/error/exceptions.dart';
+import '../../domain/entities/settings.dart';
 
 abstract class SettingsLocalDataSource {
-  Future<Settings> fetchSettings();
+  Future<UserSettings> fetchSettings();
   Future<bool> updateSettingWithKey(
       {required String key, required dynamic setting});
 }
@@ -18,29 +17,38 @@ class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
 
   SettingsLocalDataSourceImpl({required this.sharedPreferences});
   @override
-  Future<Settings> fetchSettings() async {
+  Future<UserSettings> fetchSettings() async {
+    UserSettings settings;
     final bool? thereIsSettings = sharedPreferences.getBool(isThereSettingsKey);
     if (thereIsSettings == null) {
       try {
-        _updateSettingsFromDefault(settings: defaultSettings);
+        updateSettingsFromDefault(settings: defaultSettings);
       } on EmptyCasheException {
         rethrow;
       }
-      return defaultSettings;
+      settings = defaultSettings;
     } else {
-      final Settings settingsToReturn = Settings(
-        quranEdition: sharedPreferences.getString(quranEditionKey)!,
-        quranRecuter: sharedPreferences.getString(quranRecuterKey)!,
-        ayahsCount: sharedPreferences.getInt(ayahsCountKey)!,
-        appLanguage: sharedPreferences.getString(appLanguageKey)!,
+      final UserSettings settingsToReturn = UserSettings(
+        quranEdition: sharedPreferences.getString(quranEditionKey) ??
+            defaultSettings.quranEdition,
+        quranRecuter: sharedPreferences.getString(quranRecuterKey) ??
+            defaultSettings.quranRecuter,
+        ayahsCount: int.parse(sharedPreferences.getString(ayahsCountKey) ??
+            defaultSettings.ayahsCount.toString()),
+        appLanguage: sharedPreferences.getString(appLanguageKey) ??
+            defaultSettings.appLanguage,
+        isDarkTheme: sharedPreferences.getBool('theme-mode') ?? true,
       );
-      return settingsToReturn;
+      print(settingsToReturn);
+      settings = settingsToReturn;
     }
+
+    return settings;
   }
 
-  Future<Unit> _updateSettingsFromDefault({required Settings settings}) async {
-    print("UpdateSettings");
-    final response = await _setSettings(settings);
+  Future<Unit> updateSettingsFromDefault(
+      {required UserSettings settings}) async {
+    final response = await setSettings(settings);
     if (response != true) {
       throw EmptyCasheException();
     }
@@ -48,12 +56,13 @@ class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
     return unit;
   }
 
-  Future<bool> _setSettings(Settings settings) async {
+  Future<bool> setSettings(UserSettings settings) async {
     try {
       await sharedPreferences.setString(appLanguageKey, settings.appLanguage);
       await sharedPreferences.setString(quranEditionKey, settings.quranEdition);
       await sharedPreferences.setString(quranRecuterKey, settings.quranRecuter);
-      await sharedPreferences.setInt(ayahsCountKey, settings.ayahsCount);
+      await sharedPreferences.setString(
+          ayahsCountKey, settings.ayahsCount.toString());
       return true;
     } catch (e) {
       return false;
@@ -63,9 +72,6 @@ class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
   @override
   Future<bool> updateSettingWithKey(
       {required String key, required setting}) async {
-    final rspose = await sharedPreferences.setString(key, setting);
-    print(rspose);
-
-    return rspose;
+    return await sharedPreferences.setString(key, setting);
   }
 }

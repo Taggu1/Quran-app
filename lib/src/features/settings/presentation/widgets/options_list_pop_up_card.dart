@@ -3,20 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quran_app_clean_architecture/src/core/constants/keys.dart';
-import 'package:quran_app_clean_architecture/src/core/constants/options_tiles_data.dart';
-import 'package:quran_app_clean_architecture/src/core/settings/settings_info.dart';
-import 'package:quran_app_clean_architecture/src/features/locale/presentation/cubit/locale_cubit.dart';
-import 'package:quran_app_clean_architecture/src/features/settings/domain/entities/settings.dart';
 import 'package:quran_app_clean_architecture/src/features/settings/presentation/bloc/cubit/settings_cubit.dart';
-import 'package:quran_app_clean_architecture/src/features/settings/presentation/bloc/settings_bloc/settings_bloc.dart';
 
+import '../../../../core/settings/settings_info.dart';
 import '../../../daily_werd/presentation/bloc/werd/werd_bloc.dart';
+import '../../../locale/presentation/cubit/locale_cubit.dart';
 
 class OptionsListPopUpCard extends StatefulWidget {
   final String title;
   final String settingkey;
-  final SettingsInfo settingsInfo;
   final String? initalValue;
   final bool? isLang;
   final List<Map<String, String>> listValues;
@@ -25,7 +20,6 @@ class OptionsListPopUpCard extends StatefulWidget {
       {Key? key,
       required this.title,
       required this.settingkey,
-      required this.settingsInfo,
       required this.initalValue,
       required this.listValues,
       this.isLang})
@@ -83,7 +77,11 @@ class _OptionsListPopUpCardState extends State<OptionsListPopUpCard> {
       _groupValue = val;
     });
 
-    widget.settingsInfo.updateOneSettingWithKey(widget.settingkey, val);
+    context
+        .read<SettingsCubit>()
+        .updateOneSettingWithKey(key: widget.settingkey, value: val);
+
+    context.read<WerdBloc>().add(TogglePlayerPlayingStateEvent(play: false));
 
     if (widget.isLang == true) {
       BlocProvider.of<LocaleCubit>(context).setLocal(Locale(val));

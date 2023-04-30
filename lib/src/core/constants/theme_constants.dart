@@ -7,6 +7,7 @@ final darkTheme = ThemeData(
       RadioThemeData(fillColor: MaterialStateProperty.all(Colors.white)),
   backgroundColor: kBlackColor,
   primaryColor: Colors.amber,
+  iconTheme: const IconThemeData(color: Colors.white),
   textTheme: ThemeData.light().textTheme.copyWith(
         headline3: const TextStyle(
             wordSpacing: 2,
@@ -28,6 +29,7 @@ final darkTheme = ThemeData(
 
 final lightTheme = ThemeData(
   backgroundColor: kPrimaryColor,
+  iconTheme: const IconThemeData(color: Colors.black),
   primaryColor: Colors.amber,
   textTheme: ThemeData.light().textTheme.copyWith(
         headline3: const TextStyle(

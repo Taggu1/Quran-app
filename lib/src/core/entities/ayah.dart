@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:quran_app_clean_architecture/src/core/entities/surah.dart';
+
+import 'surah.dart';
 
 class Ayah extends Equatable {
   final int numberInSurah;

@@ -5,5 +5,12 @@
     "darkTheme": "الوضع الداكن",
     "editions": "الطبعات",
     "recutiers": "القراء",
-    "versesCount": "عدد الأيات"
+    "versesCount": "عدد الأيات",
+    "progress": "تقدمك",
+    "progressPageWarning":"انت بحاجه لتسجيل الدخول لفتح ميزات هذه الصفحه",
+    "signInWithGoogleLabel":"تسجيل الدخول بواسطة جوجل",
+    "daysCount":"عدد الأيام",
+    "daysStreak":"الأيام المتواصلة",
+    "werdProgress":"أحصائياتك اليومية"
+
 }

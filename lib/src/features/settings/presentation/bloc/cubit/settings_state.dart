@@ -1,40 +1,27 @@
-// part of 'settings_cubit.dart';
+part of 'settings_cubit.dart';
 
-// abstract class SettingsState extends Equatable {
-//   const SettingsState();
+class SettingsState extends Equatable {
+  final UserSettings settings;
+  const SettingsState({required this.settings});
+  @override
+  List<Object> get props => [settings];
+}
 
-//   @override
-//   List<Object> get props => [];
-// }
+class LoadedSettingsState extends SettingsState {
+  const LoadedSettingsState({required super.settings});
+  @override
+  List<Object> get props => [settings];
+}
 
-// class SettingsInitial extends SettingsState {
-//   final Settings settings;
-//   const SettingsInitial({required this.settings});
+class FailureSettingsState extends SettingsState {
+  final String message;
+  const FailureSettingsState({required this.message, required super.settings});
+  @override
+  List<Object> get props => [message];
+}
 
-//   @override
-//   List<Object> get props => [settings];
-// }
-
-// class LoadedSettingsState extends SettingsState {
-//   final Settings settings;
-//   const LoadedSettingsState({required this.settings});
-
-//   @override
-//   List<Object> get props => [settings];
-// }
-
-// class FailureSettingsState extends SettingsState {
-//   final String message;
-
-//   const FailureSettingsState({required this.message});
-
-//   @override
-//   List<Object> get props => [message];
-// }
-
-// class LoadingSettingsState extends SettingsState {
-//   const LoadingSettingsState();
-
-//   @override
-//   List<Object> get props => [];
-// }
+class LoadingSettingsState extends SettingsState {
+  const LoadingSettingsState({required super.settings});
+  @override
+  List<Object> get props => [];
+}

@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:quran_app_clean_architecture/src/core/constants/keys.dart';
-import 'package:quran_app_clean_architecture/src/core/constants/strings.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quran_app_clean_architecture/src/features/settings/domain/entities/settings.dart';
 
-import 'package:quran_app_clean_architecture/src/features/settings/presentation/widgets/options_list_pop_up_card.dart';
-import 'package:quran_app_clean_architecture/src/features/settings/presentation/widgets/toggle_theme_tile.dart';
-
+import '../../../../core/constants/keys.dart';
 import '../../../../core/constants/options_tiles_data.dart';
+import '../../../../core/constants/strings.dart';
 import '../../../../core/settings/settings_info.dart';
+import '../bloc/cubit/settings_cubit.dart';
 import '../widgets/OptionsTile.dart';
 import '../../../../../injection_container.dart' as di;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../widgets/options_list_pop_up_card.dart';
+import '../widgets/toggle_theme_tile.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -44,16 +47,28 @@ class SettingsTilesColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          const ToggleThemeTile(),
-          EditionsOptionsTileBuilder(settingsInfo: settingsInfo),
-          QarisOptionsTileBuilder(settingsInfo: settingsInfo),
-          AyahsOptionsTileBuilder(settingsInfo: settingsInfo),
-          LanguagesOptionsTileBuilder(settingsInfo: settingsInfo),
-        ],
+      child: BlocBuilder<SettingsCubit, SettingsState>(
+        builder: (context, state) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              // const ToggleThemeTile(),
+              EditionsOptionsTileBuilder(
+                settings: state.settings,
+              ),
+              QarisOptionsTileBuilder(
+                settings: state.settings,
+              ),
+              AyahsOptionsTileBuilder(
+                settings: state.settings,
+              ),
+              LanguagesOptionsTileBuilder(
+                settings: state.settings,
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -62,10 +77,9 @@ class SettingsTilesColumn extends StatelessWidget {
 class LanguagesOptionsTileBuilder extends StatelessWidget {
   const LanguagesOptionsTileBuilder({
     Key? key,
-    required this.settingsInfo,
+    required this.settings,
   }) : super(key: key);
-
-  final SettingsInfo settingsInfo;
+  final UserSettings settings;
 
   @override
   Widget build(BuildContext context) {
@@ -74,8 +88,7 @@ class LanguagesOptionsTileBuilder extends StatelessWidget {
         isLang: true,
         title: AppLocalizations.of(context)!.language,
         settingkey: appLanguageKey,
-        settingsInfo: settingsInfo,
-        initalValue: settingsInfo.settings?.appLanguage,
+        initalValue: settings.appLanguage,
         listValues: const [
           {
             "name": "العربية",
@@ -84,7 +97,7 @@ class LanguagesOptionsTileBuilder extends StatelessWidget {
           {"name": "English", "apiName": "en"}
         ],
       ),
-      subTitle: settingsInfo.settings!.appLanguage,
+      subTitle: settings.appLanguage,
       tag: "lang-tag",
       title: AppLocalizations.of(context)!.language,
     );
@@ -92,12 +105,11 @@ class LanguagesOptionsTileBuilder extends StatelessWidget {
 }
 
 class EditionsOptionsTileBuilder extends StatelessWidget {
+  final UserSettings settings;
   const EditionsOptionsTileBuilder({
     Key? key,
-    required this.settingsInfo,
+    required this.settings,
   }) : super(key: key);
-
-  final SettingsInfo settingsInfo;
 
   @override
   Widget build(BuildContext context) {
@@ -105,11 +117,10 @@ class EditionsOptionsTileBuilder extends StatelessWidget {
       popUpPage: OptionsListPopUpCard(
         title: AppLocalizations.of(context)!.editions,
         settingkey: quranEditionKey,
-        settingsInfo: settingsInfo,
-        initalValue: settingsInfo.settings?.quranEdition,
+        initalValue: settings.quranEdition,
         listValues: editionsList,
       ),
-      subTitle: settingsInfo.settings!.quranEdition,
+      subTitle: settings.quranEdition,
       tag: editionsSettingsTileTag,
       title: AppLocalizations.of(context)!.editions,
     );
@@ -117,24 +128,22 @@ class EditionsOptionsTileBuilder extends StatelessWidget {
 }
 
 class QarisOptionsTileBuilder extends StatelessWidget {
+  final UserSettings settings;
   const QarisOptionsTileBuilder({
     Key? key,
-    required this.settingsInfo,
+    required this.settings,
   }) : super(key: key);
-
-  final SettingsInfo settingsInfo;
 
   @override
   Widget build(BuildContext context) {
     return OptionsTile(
       popUpPage: OptionsListPopUpCard(
         settingkey: quranRecuterKey,
-        settingsInfo: settingsInfo,
         title: AppLocalizations.of(context)!.recutiers,
-        initalValue: settingsInfo.settings?.quranRecuter,
+        initalValue: settings.quranRecuter,
         listValues: recrutersList,
       ),
-      subTitle: settingsInfo.settings!.quranRecuter,
+      subTitle: settings.quranRecuter,
       tag: qarisSettingsTileTag,
       title: AppLocalizations.of(context)!.recutiers,
     );
@@ -142,24 +151,22 @@ class QarisOptionsTileBuilder extends StatelessWidget {
 }
 
 class AyahsOptionsTileBuilder extends StatelessWidget {
+  final UserSettings settings;
   const AyahsOptionsTileBuilder({
     Key? key,
-    required this.settingsInfo,
+    required this.settings,
   }) : super(key: key);
-
-  final SettingsInfo settingsInfo;
 
   @override
   Widget build(BuildContext context) {
     return OptionsTile(
       popUpPage: OptionsListPopUpCard(
         settingkey: ayahsCountKey,
-        settingsInfo: settingsInfo,
         title: AppLocalizations.of(context)!.versesCount,
-        initalValue: settingsInfo.settings?.ayahsCount.toString(),
+        initalValue: settings.ayahsCount.toString(),
         listValues: ayahsCountList,
       ),
-      subTitle: settingsInfo.settings!.ayahsCount.toString(),
+      subTitle: settings.ayahsCount.toString(),
       tag: ayahsCountSettingsTileTag,
       title: AppLocalizations.of(context)!.versesCount,
     );

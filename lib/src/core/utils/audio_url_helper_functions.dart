@@ -4,36 +4,42 @@ import 'package:path_provider/path_provider.dart';
 import '../../features/settings/domain/entities/settings.dart';
 import '../models/ayah_model.dart';
 
-Future<AudioPlayer> getPlayer(
+Future<AudioPlayer?> getPlayer(
     {required List<AyahModel> ayahs,
-    required Settings settings,
+    required UserSettings settings,
     required bool fromInternet}) async {
   final appStorage = await getApplicationDocumentsDirectory();
   final firstAyah = ayahs.first;
   final ayahsCount = ayahs.length;
   final surahNum = firstAyah.surah.number;
-  final playlist = ConcatenatingAudioSource(
-    useLazyPreparation: true,
-    shuffleOrder: DefaultShuffleOrder(),
-    children: [
-      for (int i = firstAyah.numberInSurah;
-          i < firstAyah.numberInSurah + ayahsCount;
-          i++)
-        AudioSource.uri(
-          Uri.parse(
-            formatToAVaildUrl(
-                quranRecuter: settings.quranRecuter,
-                ayahNum: i,
-                surahNum: surahNum,
-                storagePath: appStorage.path,
-                fromInternet: fromInternet),
-          ),
-        )
-    ],
-  );
-  final player = AudioPlayer();
-  await player.setAudioSource(playlist);
-  return player;
+  try {
+    final playlist = ConcatenatingAudioSource(
+      useLazyPreparation: true,
+      shuffleOrder: DefaultShuffleOrder(),
+      children: [
+        for (int i = firstAyah.numberInSurah;
+            i < firstAyah.numberInSurah + ayahsCount;
+            i++)
+          LockCachingAudioSource(
+            Uri.parse(
+              formatToAVaildUrl(
+                  quranRecuter: settings.quranRecuter,
+                  ayahNum: i,
+                  surahNum: surahNum,
+                  storagePath: appStorage.path,
+                  fromInternet: fromInternet),
+            ),
+          )
+      ],
+    );
+    final player = AudioPlayer();
+
+    await player.setAudioSource(playlist);
+    return player;
+  } catch (e) {
+    print("LOOOOOOl");
+  }
+  return AudioPlayer();
 }
 
 String formatToAVaildUrl({

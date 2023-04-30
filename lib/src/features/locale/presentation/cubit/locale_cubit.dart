@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:quran_app_clean_architecture/l10n/l10n.dart';
-import 'package:quran_app_clean_architecture/src/core/settings/settings_info.dart';
+
+import '../../../../../l10n/l10n.dart';
+import '../../../../core/settings/settings_info.dart';
 
 part 'locale_state.dart';
 
