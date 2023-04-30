@@ -1,16 +1,28 @@
-# quran_app_clean_architecture
+# Flutter Werd app [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-A new Flutter project.
+⭐️ the repo if you love it.
 
-## Getting Started
+## Getting Started 🚀
 
-This project is a starting point for a Flutter application.
+- Clone the repo
+- Install the dependicies
+- Run it
 
-A few resources to get you started if this is your first Flutter project:
+## Features 💡
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- A random werd from the quran that updates each day 
+- Many quran translations
+- Many quran readers
+- Dark/Light mode
+- Arabic support
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Preview 📸
+
+
+|                                           |                                           |                                           |
+| ----------------------------------------- | ----------------------------------------- | ----------------------------------------- |
+| <img src="screenShots/screenshot2.jpg" width="400"> | <img src="screenShots/screenshot1.jpg" width="400"> | <img src="screenShots/screenshot3.jpg" width="400"> |
+
+
+## Contact me 📧
+#### Email : hm834806@gmail.com
